@@ -17,7 +17,7 @@ extension SharedReaderKey {
     FetchKey(request: request, database: database, scheduler: nil)
   }
 
-  static func fetch<Records: RangeReplaceableCollection>(
+  public static func fetch<Records: RangeReplaceableCollection>(
     _ request: some FetchKeyRequest<Records>,
     database: (any DatabaseReader)? = nil
   ) -> Self
@@ -46,7 +46,7 @@ extension SharedReaderKey {
   }
 }
 
-struct FetchKey<Value: Sendable>: SharedReaderKey {
+public struct FetchKey<Value: Sendable>: SharedReaderKey {
   let database: any DatabaseReader
   let request: any FetchKeyRequest<Value>
   let scheduler: (any ValueObservationScheduler & Hashable)?
@@ -160,7 +160,7 @@ struct FetchKey<Value: Sendable>: SharedReaderKey {
   }
 }
 
-struct FetchKeyID: Hashable {
+public struct FetchKeyID: Hashable {
   fileprivate let databaseID: ObjectIdentifier
   fileprivate let request: AnyHashableSendable
   fileprivate let requestTypeID: ObjectIdentifier
