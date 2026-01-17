@@ -84,7 +84,7 @@ class RemindersDetailModel: HashableObject {
 
   private func updateQuery() async {
     await withErrorReporting {
-      try await $reminderRows.load(remindersQuery, animation: .default)
+      _ = try await $reminderRows.load(remindersQuery, animation: .default)
     }
   }
 
@@ -367,8 +367,8 @@ struct RemindersDetailPreview: PreviewProvider {
       $0.defaultDatabase = try Reminders.appDatabase()
       return try $0.defaultDatabase.read { db in
         (
-          try RemindersList.all.fetchOne(db)!,
-          try Tag.all.fetchOne(db)!
+          try RemindersList.fetchOne(db)!,
+          try Tag.fetchOne(db)!
         )
       }
     }

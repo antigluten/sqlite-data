@@ -546,8 +546,8 @@
           │   ),                                                       │
           │   share: nil,                                              │
           │   _isDeleted: false,                                       │
-          │   hasLastKnownServerRecord: true,                          │
-          │   isShared: false,                                         │
+          │   _hasLastKnownServerRecord: true,                         │
+          │   _isShared: false,                                        │
           │   userModificationTime: 0                                  │
           │ )                                                          │
           └────────────────────────────────────────────────────────────┘
@@ -629,8 +629,8 @@
           │   ),                                                       │
           │   share: nil,                                              │
           │   _isDeleted: false,                                       │
-          │   hasLastKnownServerRecord: true,                          │
-          │   isShared: false,                                         │
+          │   _hasLastKnownServerRecord: true,                         │
+          │   _isShared: false,                                        │
           │   userModificationTime: 0                                  │
           │ )                                                          │
           └────────────────────────────────────────────────────────────┘
@@ -699,8 +699,8 @@
           │   ),                                                           │
           │   share: nil,                                                  │
           │   _isDeleted: false,                                           │
-          │   hasLastKnownServerRecord: true,                              │
-          │   isShared: false,                                             │
+          │   _hasLastKnownServerRecord: true,                             │
+          │   _isShared: false,                                            │
           │   userModificationTime: 0                                      │
           │ )                                                              │
           └────────────────────────────────────────────────────────────────┘
@@ -738,6 +738,12 @@
           }
         }
         #expect(error?.message == SyncEngine.invalidRecordNameError)
+      }
+
+      @available(iOS 17, macOS 14, tvOS 17, watchOS 10, *)
+      @Test func syncInvalidRecordID() async throws {
+        let record = CKRecord(recordType: "foo", recordID: CKRecord.ID(recordName: "bar"))
+        try await syncEngine.modifyRecords(scope: .private, saving: [record]).notify()
       }
     }
   }

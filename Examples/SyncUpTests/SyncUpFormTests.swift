@@ -6,12 +6,11 @@ import Testing
 
 @testable import SyncUps
 
+@MainActor
 @Suite(
   .dependencies {
     try $0.bootstrapDatabase()
-    try $0.defaultDatabase.write { db in
-      try db.seed()
-    }
+    try await $0.defaultDatabase.seedForTests()
     $0.uuid = .incrementing
   }
 )
@@ -39,7 +38,7 @@ struct SyncUpFormTests {
 
   @Test func updateExisting() async throws {
     let existingSyncUp = try await database.read { db in
-      try #require(try SyncUp.all.fetchOne(db))
+      try #require(try SyncUp.fetchOne(db))
     }
     let draft = SyncUp.Draft(existingSyncUp)
     let model = SyncUpFormModel(syncUp: draft)
