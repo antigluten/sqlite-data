@@ -133,7 +133,9 @@
             recordPrimaryKey: record.primaryKey.rawIdentifier,
             reason: .recordMetadataNotFound,
             debugDescription: """
-              No sync metadata found for record. Has the record been saved to the database?
+              No sync metadata found for record. Has the record been saved to the database \
+              and synchronized to iCloud? Invoke 'SyncEngine.sendChanges()' to force \
+              synchronization.
               """
           )
         }
@@ -204,7 +206,7 @@
           .where { $0.recordName.eq(recordName) }
           .update {
             $0.setLastKnownServerRecord(savedRootRecord)
-            $0.share = savedShare
+            $0.share = #bind(savedShare)
           }
           .execute(db)
       }
